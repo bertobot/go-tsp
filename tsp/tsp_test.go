@@ -8,7 +8,7 @@ func testpoll() ([]KV, int, string) {
 }
 
 func TestTsp(t *testing.T) {
-    want := "v0.2"
+    want := "v0.3"
 
     if got := Version; got != want {
         t.Errorf("Version = %q, want %q", got, want)
