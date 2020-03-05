@@ -21,9 +21,19 @@ type KV struct {
     value float64
 }
 
+func NewKV(key string, value float64) KV {
+    kv := KV{key, value}
+    return kv
+}
+
 type TV struct {
     timestamp int
     value float64
+}
+
+func NewTV(millis int, value float64) TV {
+    tv := TV{millis, value}
+    return tv
 }
 
 func check(e error) {
