@@ -43,8 +43,8 @@ func check(e error) {
 }
 
 func (t *Client) Connect() {
-    strport := strconv.Itoa(t.port)
-    conn, err := net.Dial(t.host, strport)
+    //strport := strconv.Itoa(t.port)
+    conn, err := net.Dial("tcp", fmt.Sprintf("%s:%d", t.host, t.port))
     check(err)
 
     t.conn = conn
