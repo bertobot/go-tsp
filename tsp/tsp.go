@@ -55,7 +55,8 @@ func (t *Client) Close() {
 }
 
 func (t *Client) Put(key string, timestamp int, value float64) bool {
-    t.conn.Write([]byte(fmt.Sprintf("put %s %d %f\n", key, timestamp, value)))
+    msg := fmt.Sprintf("put %s %d %f\n", key, timestamp, value)
+    t.conn.Write([]byte(msg))
     result, err := bufio.NewReader(t.conn).ReadString('\n')
     check(err)
     return result == "ok"
@@ -68,7 +69,8 @@ func (t *Client) PutMultipleKV(timestamp int, pairs []KV) bool {
         pairstr += fmt.Sprintf(" %s %f", kv.key, kv.value)
     }
 
-    t.conn.Write([]byte(fmt.Sprintf("mkput %d%s\n", timestamp, pairstr)))
+    msg := fmt.Sprintf("mkput %d%s\n", timestamp, pairstr)
+    t.conn.Write([]byte(msg))
 
     for range pairs {
         result, err := bufio.NewReader(t.conn).ReadString('\n')
@@ -87,7 +89,8 @@ func (t *Client) PutMultipleTV(key string, pairs []TV) bool {
         pairstr += fmt.Sprintf(" %d %f", tv.timestamp, tv.value)
     }
 
-    t.conn.Write([]byte(fmt.Sprintf("mtput %s%s\n", key, pairstr)))
+    msg := fmt.Sprintf("mtput %s%s\n", key, pairstr)
+    t.conn.Write([]byte(msg))
 
     for range pairs {
         result, err := bufio.NewReader(t.conn).ReadString('\n')
@@ -102,7 +105,8 @@ func (t *Client) PutMultipleTV(key string, pairs []TV) bool {
 func (t *Client) Get(key string, start int, end int) []TV {
     var result []TV
 
-    t.conn.Write([]byte(fmt.Sprintf("get %s %d %d\n", key, start, end)))
+    msg := fmt.Sprintf("get %s %d %d\n", key, start, end)
+    t.conn.Write([]byte(msg))
 
     scanner := bufio.NewScanner(t.conn)
 
