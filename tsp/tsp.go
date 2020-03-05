@@ -42,9 +42,9 @@ func check(e error) {
     }
 }
 
-func (t *Client) Connect(host string, port int) {
-    strport := strconv.Itoa(port)
-    conn, err := net.Dial(host, strport)
+func (t *Client) Connect() {
+    strport := strconv.Itoa(t.port)
+    conn, err := net.Dial(t.host, strport)
     check(err)
 
     t.conn = conn
