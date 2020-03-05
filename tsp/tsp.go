@@ -65,10 +65,10 @@ func (t *Client) PutMultipleKV(timestamp int, pairs []KV) bool {
 // put multiple key-values on a single timestamp
     var pairstr string
     for _,kv := range pairs {
-        pairstr += fmt.Sprintf("%s %f", kv.key, kv.value)
+        pairstr += fmt.Sprintf(" %s %f", kv.key, kv.value)
     }
 
-    t.conn.Write([]byte(fmt.Sprintf("mkput %d %s\n", timestamp, pairstr)))
+    t.conn.Write([]byte(fmt.Sprintf("mkput %d%s\n", timestamp, pairstr)))
 
     for range pairs {
         result, err := bufio.NewReader(t.conn).ReadString('\n')
@@ -84,10 +84,10 @@ func (t *Client) PutMultipleTV(key string, pairs []TV) bool {
 // put multiple timestamp-values on a single key
     var pairstr string
     for _,tv := range pairs {
-        pairstr += fmt.Sprintf("%d %f", tv.timestamp, tv.value)
+        pairstr += fmt.Sprintf(" %d %f", tv.timestamp, tv.value)
     }
 
-    t.conn.Write([]byte(fmt.Sprintf("mtput %s %s\n", key, pairstr)))
+    t.conn.Write([]byte(fmt.Sprintf("mtput %s%s\n", key, pairstr)))
 
     for range pairs {
         result, err := bufio.NewReader(t.conn).ReadString('\n')
