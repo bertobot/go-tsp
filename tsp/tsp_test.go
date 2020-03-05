@@ -25,3 +25,17 @@ func TestPoller(t *testing.T) {
     })
 }
 
+func TestKV(t *testing.T) {
+    kv := NewKV("key", float64(-1.0))
+    if kv.key != "key" || kv.value != -1.0 {
+        t.Errorf("kv mismatch - key: %s, value: %0.1f", kv.key, kv.value)
+    }
+}
+
+func TestTV(t *testing.T) {
+    tv := NewTV(1234567890111, -1.0)
+    if tv.timestamp != 1234567890111 || tv.value != -1.0 {
+        t.Errorf("tv mismatch - tv.timestamp: %d, tv.value: %0.1f", tv.timestamp, tv.value)
+    }
+}
+
