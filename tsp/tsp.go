@@ -171,7 +171,7 @@ func (p *Poller) Run() {
             if p.onComplete != nil {
                 p.onComplete(elapsed)
             } else {
-                time.Sleep(time.Duration((p.period * time.Second) - elapsed.Seconds()))
+                time.Sleep(time.Duration((p.period * float64(time.Second)) - elapsed.Seconds()))
             }
         }
     }
