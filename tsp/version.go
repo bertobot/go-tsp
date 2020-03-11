@@ -1,3 +1,3 @@
 package tsp
 
-const Version = "v0.4"
+const Version = "v0.5"
