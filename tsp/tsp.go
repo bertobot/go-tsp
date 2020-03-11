@@ -14,6 +14,7 @@ type Client struct {
     host string
     port int
     conn net.Conn
+    connected bool
 }
 
 type KV struct {
@@ -48,10 +49,12 @@ func (t *Client) Connect() {
     check(err)
 
     t.conn = conn
+    t.connected = true
 }
 
 func (t *Client) Close() {
     t.conn.Close()
+    t.connected = false
 }
 
 func (t *Client) Put(key string, timestamp int, value float64) bool {
@@ -128,8 +131,12 @@ func (t *Client) Get(key string, start int, end int) []TV {
     return result
 }
 
+func (t *Client) IsConnected() bool {
+    return t.connected
+}
+
 func NewClient(hostname string, port int) Client {
-    c := Client{hostname, port, nil}
+    c := Client{hostname, port, nil, false}
     return c
 }
 
@@ -147,6 +154,12 @@ func (p *Poller) Add(f func() ([]KV, int, string)) {
 
 func (p *Poller) Run() {
     for {
+        if p.client.IsConnected() {
+            p.client.Close()
+        }
+
+        p.client.Connect()
+
         // TODO: time each function and publish as meta?
         start := time.Now()
 
@@ -174,6 +187,8 @@ func (p *Poller) Run() {
                 time.Sleep(time.Duration((p.period * float64(time.Second)) - elapsed.Seconds()))
             }
         }
+
+        p.client.Close()
     }
 }
 
